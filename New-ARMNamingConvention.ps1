@@ -1,13 +1,4 @@
 ﻿#Requires -Version 3.0
-# Put help inside the function.
-# Make parameters more intuitive and in proper case
-# Instead of concatenation, use subexpressions. 
-# don't think you need to explicitly call Write-Output. Just type the value you want written to the pipeline.
-# meaningful variable names (what is $e?)
-# No, don't include csv output in your function. It should write an object to the pipeline that if you need to be a CSV, you can then pipe your command to a CSV cmdlet.
-
-
-
 function New-ARMNamingConvention
 <#
     .Synopsis
@@ -33,7 +24,7 @@ function New-ARMNamingConvention
   [CmdletBinding()]
   Param
   (
-    [Parameter(Mandatory=$true,HelpMessage='Project name must begin with a letter and contain no more than four characters.')]   
+    [Parameter(Mandatory,HelpMessage='Project name must begin with a letter and contain no more than four characters.')]   
     [ValidateScript({
           If (($_ -notmatch "^(-|_|[0-9])") -And ($_ -match "([a-zA-Z]|[0-9])$"))
           {
@@ -47,26 +38,13 @@ function New-ARMNamingConvention
     [ValidateLength(1,4)]
     [string]$Project,
 
-    [Parameter(Mandatory=$true, HelpMessage='You must choose an environment value from the validate set')]
+    [Parameter(Mandatory,HelpMessage='You must choose an environment value from the validate set')]
     [ValidateSet('Development','Staging','Testing','Production')]
     [string]$Environment
   )
 
   Begin
   {
-    $ProjectWorking = $Project.ToLower()
-        
-    if ($ProjectWorking -match  '^(_|-|[0-9])')
-    {
-      Throw New-Object -TypeName System.ArgumentException -ArgumentList "Sorry. Your project name must begin with a letter."
-    }
-        
-    if ($ProjectWorking.Length -gt 4)
-    {
-      Write-Error -Message ("Sorry. Your project name is " + $ProjectWorking.Length + " characters, and needs to be 4 or fewer.") -Category InvalidArgument
-      throw "Terminating error"
-    }
-         
     $Unique = ((1..2 | ForEach-Object{ '{0:X}' -f (Get-Random -Max 16) }) -join '').ToLower()
      
     switch ($Environment)
@@ -77,51 +55,59 @@ function New-ARMNamingConvention
       'production' { $EnvWorking = 'prd'}
     }
     
+    #store data in a CSV format to make it easier to convert to objects later.
+    $data = @"
+    "Name","Displayname","Type"
+    "rg","Resource Group","PaaS"
+    "vm","Virtual Machine","IaaS"
+    "st","Storage Account","IaaS"
+    "as","Availability Set","PaaS"
+    "vn","Virtual Network","IaaS"
+    "ln","Local Network","IaaS"
+    "sn","Subnet","IaaS"
+    "gw","Gateway","IaaS"
+    "lb","Load Balancer","IaaS"
+    "nic","Network Interface","IaaS"
+    "tm","Traffic Manager","IaaS"
+    "ip","Public IP Address","IaaS"
+    "wa","Web App","PaaS"
+    "api","API App","PaaS"
+    "la","Logic App","PaaS"
+    "sql","SQL Server","PaaS"
+    "sp","App Service Plan","PaaS"
+    "db","Database","PaaS"    
+"@
+
+    
+    
+    
+    
+    
+    
   }
   Process
   {
-    # Todo: Sort the resources by type (Perhaps IaaS and PaaS) 
+      $data | ConvertFrom-Csv | foreach-object {
+        if ($_.name -eq 'st') {
+            $Value = "$($Project.toLower())$Unique$($_.name)$EnvWorking"
+        }
+        else {
+            $value = "$($Project.toLower())-$Unique-$($_.name)-$EnvWorking"
+        }
+        #add the name value as a new property
+        $_ | Add-Member -MemberType NoteProperty -Name Value -Value $Value -PassThru
+        }
+
+
    
-    $resources = [ordered]@{rg='Resource Group';
-                            vm='Virtual Machine';
-                            st='Storage Account';
-                            as='Availability Set';
-                            vn='Virtual Network';
-                            ln='Local Network';
-                            sn='Subnet';
-                            gw='Gateway';
-                            lb='Load Balancer';
-                            nic='Network Interface';
-                            tm='Traffic Manager';
-                            ip='Public IP Address';
-                            wa='Web App';
-                            api='API App';
-                            la='Logic App';
-                            sql='SQL Server';
-                            sp='App Service Plan';
-                            db='Database';
    
-    }
+  }
           
-    $resources.GetEnumerator() | ForEach-Object { 
-            
-      if ($($_.key) -eq 'st')
-      {
-        Write-Output -InputObject ("$($_.value): $ProjectWorking$Unique$($_.key)$EnvWorking")
-      }
-      else
-      {
-        Write-Output -InputObject ("$($_.value): $ProjectWorking" + '-' + $Unique + '-' + "$($_.key)-$EnvWorking")
-      }
-    }
 
   }
   End
   {
-    $out = New-Object -TypeName System.Management.Automation.PSCustomObject
-    $out | Add-Member -MemberType NoteProperty 'Resource' $($_.Value)
-    Write-Output $out
   
   }
-}
+
 New-ARMNamingConvention -Project 'plu' -Environment 'Staging'
