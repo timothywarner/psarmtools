@@ -1,4 +1,4 @@
-﻿#Requires -Version 3.0
+#Requires -Version 3.0
 function New-ARMNamingConvention
 {
 <#
@@ -99,8 +99,8 @@ function New-ARMNamingConvention
         $_ | Add-Member -MemberType NoteProperty -Name Value -Value $Value -PassThru
       }
   }
-  }
   End
   {
   
   }
+}
