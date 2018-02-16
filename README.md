@@ -34,6 +34,6 @@ You are limited to a maximum of four characters for your project name. Don't get
 ## Credit
 Special thanks to the following friends and fellow PowerShell community members for their help:
 
-* Jeff Hicks (@jeffhicks) - I couldn't have done this without you :)
-* Mike F. Robbins (@ ) - Your code is my main reference material 
-* Adam Bertram (@) - Your Pluralsight courses are fantastic
+* Jeff Hicks ([@jeffhicks](https://twitter.com/jeffhicks)) - I couldn't have done this without you :)
+* Mike F. Robbins ([@mikefrobbins](https://twitter.com/mikefrobbins)) - Your code is my main reference material 
+* Adam Bertram ([@adbertram](https://twitter.com/adbertram)) - Your Pluralsight courses are fantastic
