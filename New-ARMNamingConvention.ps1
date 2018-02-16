@@ -1,16 +1,19 @@
 ﻿#Requires -Version 3.0
 function New-ARMNamingConvention
+{
 <#
     .Synopsis
-    Short description
+    Generates an Azure resource naming convention based on Microsoft best practice guidelines.
     .DESCRIPTION
-    Long description
-    .PARAMETER PName1
-    Description
+    New-ARMNamingConvention is a PowerShell advanced function that simplifies the generation of a consistent Azure resource naming convention. The function takes into account both Microsoft best practices as well as known resource naming limitations.
+    .PARAMETER Project
+    Deployment name. This could be part of a company name or a project name.
+    .PARAMETER Environment
+    The target environment. Options include Development, Staging, Testing, and Production.
     .EXAMPLE
-    Example of how to use this cmdlet
+    New-ARMNamingConvention -Project 'plura' -Environment 'Development'
     .EXAMPLE
-    Another example of how to use this cmdlet
+    New-ARMNamingConvention -Project 'xyza' -Environment 'Testing' | Where-Object {$_.Type -eq 'PaaS'}
     .INPUTS
     String
     .OUTPUTS
@@ -20,7 +23,7 @@ function New-ARMNamingConvention
     Website: timwarnertech.com
     Twitter: @TechTrainerTim
 #>
-{
+
   [CmdletBinding()]
   Param
   (
@@ -45,8 +48,10 @@ function New-ARMNamingConvention
 
   Begin
   {
+    # Generate a two-digit hex string to serve as a unique identifier 
     $Unique = ((1..2 | ForEach-Object{ '{0:X}' -f (Get-Random -Max 16) }) -join '').ToLower()
-     
+    
+    # Translate the environment parameter into desired three-character format 
     switch ($Environment)
     {
       'development'{ $EnvWorking = 'dev'}
@@ -55,10 +60,11 @@ function New-ARMNamingConvention
       'production' { $EnvWorking = 'prd'}
     }
     
-    #store data in a CSV format to make it easier to convert to objects later.
+    #Store data in CSV format to make it easier to convert to objects later
     $data = @"
-    "Name","Displayname","Type"
-    "rg","Resource Group","PaaS"
+    "Name","DisplayName","Type"
+    "sub","Subscription","Global"
+    "rg","Resource Group","Global"
     "vm","Virtual Machine","IaaS"
     "st","Storage Account","IaaS"
     "as","Availability Set","PaaS"
@@ -77,37 +83,24 @@ function New-ARMNamingConvention
     "sp","App Service Plan","PaaS"
     "db","Database","PaaS"    
 "@
-
-    
-    
-    
-    
-    
-    
   }
   Process
   {
       $data | ConvertFrom-Csv | foreach-object {
-        if ($_.name -eq 'st') {
+        if ($_.name -eq 'st')
+        {
             $Value = "$($Project.toLower())$Unique$($_.name)$EnvWorking"
         }
-        else {
+        else
+        {
             $value = "$($Project.toLower())-$Unique-$($_.name)-$EnvWorking"
         }
-        #add the name value as a new property
+        #add 'Value' as a new property
         $_ | Add-Member -MemberType NoteProperty -Name Value -Value $Value -PassThru
-        }
-
-
-   
-   
+      }
   }
-          
-
   }
   End
   {
   
   }
-
-New-ARMNamingConvention -Project 'plu' -Environment 'Staging'
