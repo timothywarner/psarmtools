@@ -16,7 +16,7 @@
       Get-ARMVmStatus -All
  
       .EXAMPLE
-      '46.19.37.108', '2a02:2770::21a:4aff:feb3:2ee' | Get-MrGeoInformation
+      vms -res 'myrg1'
  
       .INPUTS
       String
@@ -28,8 +28,9 @@
       Author:  Timothy Warner
       Website: timwarnertech.com
       Twitter: @TechTrainerTim
+      Credit: I adapted code from a few different sources. Thanks to those developers for the "leg up": http://timw.info/s01; http://timw.info/s02
   #>
-  [cmdletbinding(DefaultParameterSetName = 'default',
+  [CmdletBinding(DefaultParameterSetName = 'default',
                  ConfirmImpact = 'low')]
   [Alias("vms")]
   Param (
