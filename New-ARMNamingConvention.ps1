@@ -22,6 +22,7 @@ function New-ARMNamingConvention
       Author: Tim Warner
       Website: timwarnertech.com
       Twitter: @TechTrainerTim
+      Community Contributors: Brandon Olin; Mukesh Shende
   #>
 
   [CmdletBinding()]
