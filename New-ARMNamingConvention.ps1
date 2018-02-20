@@ -81,8 +81,11 @@ function New-ARMNamingConvention
     "elb","External Load Balancer","IaaS"
     "ilb","Internal Load Balancer","IaaS"
     "nic","Network Interface","IaaS"
+    "nsg","Network Security Group","IaaS"
+    "rt","Route Table", "IaaS"
     "tm","Traffic Manager","IaaS"
     "ip","Public IP Address","IaaS"
+    "ipc","IP Configuration","IaaS"
     "wa","Web App","PaaS"
     "api","API App","PaaS"
     "la","Logic App","PaaS"
@@ -98,17 +101,17 @@ function New-ARMNamingConvention
   Process
   {
       $Data | ConvertFrom-Csv | ForEach-Object {
-        if ($_.name -eq 'st')
-        {
-            $Value = "$($Project.toLower())$Unique$($_.name)$EnvWorking"
-        }
-        else
-        {
-            $Value = "$($Project.toLower())-$Unique-$($_.name)-$EnvWorking"
-        }
-        # Add 'Value' as a new property
-        $_ | Add-Member -MemberType NoteProperty -Name Value -Value $Value -PassThru
-      }
+          if ($_.name -eq 'st')
+          {
+              $Value = "$($Project.toLower())$Unique$($_.name)$EnvWorking"
+          }
+          else
+          {
+              $Value = "$($Project.toLower())-$Unique-$($_.name)-$EnvWorking"
+          }
+          # Add 'Value' as a new property
+          $_ | Add-Member -MemberType NoteProperty -Name Value -Value $Value -PassThru
+                                }
   }
   End
   {
