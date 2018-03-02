@@ -36,11 +36,11 @@ function Get-CurrentUserContext
   {
     if ((Get-CimInstance -ClassName Win32_ComputerSystem).PartOfDomain -eq $true)
     {
-      $out | Select-Object -Property User, IsAdmin, Host, Domain, FQDN | Format-List
+      $out | Select-Object -Property User, IsAdmin, Host, Domain, FQDN
     }
     else
     {
-      $out | Select-Object -Property User, IsAdmin, Host, Workgroup | Format-List
+      $out | Select-Object -Property User, IsAdmin, Host, Workgroup
     }
   }
 }
