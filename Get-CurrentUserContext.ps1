@@ -19,7 +19,7 @@ function Get-CurrentUserContext
     $hostName = $env:COMPUTERNAME        
     $isDomain = (Get-CimInstance -ClassName Win32_ComputerSystem).Domain
     $isWorkgroup = (Get-CimInstance -ClassName Win32_ComputerSystem).Workgroup
-    $FQDN=(Get-CimInstance -ClassName Win32_ComputerSystem).DNSHostName + "." + (Get-CimInstance -ClassName Win32_ComputerSystem).Domain
+    $FQDN=(Get-CimInstance -ClassName Win32_ComputerSystem).DNSHostName + "." + $isDomain
        
     $data = [ordered]@{
       User        = $userName
@@ -40,7 +40,7 @@ function Get-CurrentUserContext
     }
     else
     {
-      $out | Select-Object -Property User, IsAdmin, Host, Workgroup
+      $out | Select-Object -Property User, IsAdmin, Host, Workgroup, FQDN
     }
   }
 }
