@@ -19,7 +19,7 @@ function Get-CurrentUserContext
     $hostName = $env:COMPUTERNAME        
     $isDomain = (Get-CimInstance -ClassName Win32_ComputerSystem).Domain
     $isWorkgroup = (Get-CimInstance -ClassName Win32_ComputerSystem).Workgroup
-    $FQDN=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
+    $FQDN=(Get-CimInstance -ClassName Win32_ComputerSystem).DNSHostName + "." + (Get-CimInstance -ClassName Win32_ComputerSystem).Domain
        
     $data = [ordered]@{
       User        = $userName
