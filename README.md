@@ -1,10 +1,15 @@
-# New-ARMNamingConvention
+# Welcome to the Azure Resource Manager Toolkit!
+Here you will find a collection of PowerShell modules designed to make your life working with ARM a bit easier.
+
+Please feel free to submit fixes and enhancements via the GitHub pull request system. You can reach me directly at timothywarner316@gmail.com. Thanks for stopping by!
+
+## New-ARMNamingConvention
 This PowerShell function generates an Azure Resource Manager naming convention in accordance with best practices and and naming limitations.
 
-## Usage
-The function has two (mandatory) parameters:
+### Usage
+The function has two mandatory parameters:
 
-* **Project**: Your project name must begin with a letter and contain no more than four characters
+* **Project**: Your project ID must begin with a letter and contain no more than four characters
 * **Environment**: You can specify Development, Staging, Testing, or Production
 
 Here's an example showing partial output:
@@ -24,14 +29,14 @@ Notice the storage account's format; this defers to the (frustrating) limitation
 
 You are limited to a maximum of four characters for your project name. Don't get angry! Azure has a 15-character requirement for virtual machine names, so I applied that 15-character maximum to all these proposed resource names. Better safe than sorry!
 
-## TODO
+### TODO
 * Finish comment-based help
 * Include additional Azure resources
 * Organize the IaaS and PaaS categories
 * Incorporate Pester tests
 * Add functionality to the output object
 
-## Credit
+### Credit
 Special thanks to the following friends and fellow PowerShell community members for their help:
 
 * Jeff Hicks ([@jeffhicks](https://twitter.com/jeffhicks)) - I couldn't have done this without you :)
