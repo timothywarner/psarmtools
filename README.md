@@ -19,15 +19,15 @@ PS C:\>New-ARMNamingConvention -Project 'plur' -Environment 'Development'
 
 Name DisplayName       Type Value          
     
-rg   Resource Group    PaaS plur-18-rg-dev 
-vm   Virtual Machine   IaaS plur-18-vm-dev 
-st   Storage Account   IaaS plur18stdev   
+rg   Resource Group    PaaS plur-8F-rg-dev 
+vm   Virtual Machine   IaaS plur-8F-vm-dev 
+st   Storage Account   IaaS plur8fstdev   
 ```
-In the above output, the **18** represents a two-digit hexadecimal identifier. As you know, some Azure resources need to be globally unique.
+In the above output, the **8F** represents a two-digit hexadecimal identifier. As you know, some Azure resources need to be globally unique, so this method attempts to make that easier for you.
 
 Notice the storage account's format; this defers to the (frustrating) limitations of lowercase, alphanumeric storage account names with no intervening hyphens or underscores.
 
-You are limited to a maximum of four characters for your project name. Don't get angry! Azure has a 15-character requirement for virtual machine names, so I applied that 15-character maximum to all these proposed resource names. Better safe than sorry!
+You are limited to a maximum of four characters for your project name. Azure has a 15-character requirement for virtual machine names, so I applied that 15-character maximum to all these proposed resource names. Better safe than sorry!
 
 ### TODO
 * Finish comment-based help
